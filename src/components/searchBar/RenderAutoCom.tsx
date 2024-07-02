@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useEffect, useState, useRef } from "react";
-import { useAppDispatch } from "../../hooks";
+import { useAppDispatch } from "../../redux/hooks";
 import { setSearchWordTK, setOrderCommandTK } from "../../redux/dataSlice";
 import AutoList from "./AutoList";
 import HistoryList from "./HistoryList";
@@ -14,16 +14,11 @@ interface AutoCompType {
   searchWord: string;
 }
 
-function RenderAutoCom({
-  autoComplete,
-  searchWord,
-  setSearchWord,
-  setSearchList,
-}: AutoCompType) {
+function RenderAutoCom({ autoComplete, searchWord, setSearchWord, setSearchList }: AutoCompType) {
   const [searchHistory, setSearchHistory] = useState<Array<string>>([]);
   const dispatch = useAppDispatch();
   const layOutArea = useRef<HTMLDivElement>(null);
-  
+
   const handleTagName = (word: string) => {
     let getSessionData = sessionStorage.getItem("SearchHistory");
 
@@ -32,7 +27,7 @@ function RenderAutoCom({
     } else {
       let historyArr: Array<string> = JSON.parse(getSessionData);
 
-      if(historyArr.length>6){
+      if (historyArr.length > 6) {
         historyArr.pop();
       }
       historyArr.unshift(word);
@@ -44,7 +39,7 @@ function RenderAutoCom({
     setSearchList(false);
     setSearchWord(word);
     dispatch(setSearchWordTK(word));
-    dispatch(setOrderCommandTK("date"));
+    dispatch(setOrderCommandTK("createdTime"));
   };
 
   useEffect(() => {
@@ -82,17 +77,9 @@ function RenderAutoCom({
   return (
     <SearchList ref={layOutArea}>
       {searchWord === "" ? (
-        <HistoryList
-          searchHistory={searchHistory}
-          handleTagName={handleTagName}
-          setSearchHistory={setSearchHistory}
-        />
+        <HistoryList searchHistory={searchHistory} handleTagName={handleTagName} setSearchHistory={setSearchHistory} />
       ) : (
-        <AutoList
-          autoComplete={autoComplete}
-          handleTagName={handleTagName}
-          searchWord={searchWord}
-        />
+        <AutoList autoComplete={autoComplete} handleTagName={handleTagName} searchWord={searchWord} />
       )}
     </SearchList>
   );

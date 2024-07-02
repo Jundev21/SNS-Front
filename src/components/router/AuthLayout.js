@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
-import HoverModal from "./modal/HoverModal";
+import HoverModal from "../modal/HoverModal";
 
 const AuthLayout = () => {
   const navigate = useNavigate();
@@ -16,11 +16,11 @@ const AuthLayout = () => {
   };
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
+    if (!sessionStorage.getItem("token")) {
       handleNotiModal();
       // navigate("/");
     }
-  }, [localStorage.getItem("token")]);
+  }, [sessionStorage.getItem("token")]);
 
   return <div>{notiModal ? <HoverModal handleModal={handleNotiModal} currModalContent={currModalContent} /> : <Outlet />}</div>;
 };

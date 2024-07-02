@@ -8,7 +8,7 @@ function LogOut({ setIsLogin }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
     setIsLogin(false);
     navigate("/");
   };

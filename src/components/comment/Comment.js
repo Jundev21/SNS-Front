@@ -15,7 +15,7 @@ function Comment({ state, handleGetComments }) {
       url: "/api/v1/user/board/" + id + "/comment",
       method: "POST",
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
       data: {
         content: comment,
@@ -28,11 +28,16 @@ function Comment({ state, handleGetComments }) {
         console.log(error);
       });
   };
+
+  const changeComment = (v) => {
+    setComment(v.target.value);
+  };
+
   return (
     <CommentContainer>
       <form className="form-group  mb-2 row">
         <div className="form-group col">
-          <textarea className="form-control" id="inputPassword2" placeholder="댓글 추가" onChange={(v) => setComment(v.target.value)} />
+          <textarea className="form-control" id="inputPassword2" placeholder="댓글 추가" onChange={(v) => changeComment(v)} />
         </div>
         <button type="submit" className="btn btn-primary col-1">
           등록

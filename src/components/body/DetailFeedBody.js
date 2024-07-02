@@ -2,12 +2,14 @@ import styled from "styled-components";
 import axios from "axios";
 import dayjs from "dayjs";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import HoverModal from "components/modal/HoverModal";
+import { useAppSelector } from "../../redux/hooks";
 
 function DetailFeedBody() {
   const { state } = useLocation();
+  const { userProfileImg } = useAppSelector((state) => state.searchState);
   const [page, setPage] = useState(0);
   const [title, setTitle] = useState(state.title);
   const [writer, setWriter] = useState(state.basicUserInfoResponse.userName);
@@ -28,7 +30,7 @@ function DetailFeedBody() {
   };
 
   const handleLikePost = (event) => {
-    if (!localStorage.getItem("token")) {
+    if (!sessionStorage.getItem("token")) {
       handleNotiModal();
       return;
     }
@@ -37,7 +39,7 @@ function DetailFeedBody() {
         url: "/api/v1/favorite/board/" + id,
         method: "DELETE",
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
         },
       })
         .then((res) => {
@@ -51,7 +53,7 @@ function DetailFeedBody() {
         url: "/api/v1/favorite/board/" + id,
         method: "POST",
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
         },
       })
         .then((res) => {
@@ -68,7 +70,7 @@ function DetailFeedBody() {
       url: "/api/v1/favorite/board/" + id,
       method: "GET",
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
     })
       .then((res) => {
@@ -91,7 +93,7 @@ function DetailFeedBody() {
       url: "/api/v1/user/board/" + id + "/comment",
       method: "GET",
       // headers: {
-      //   Authorization: "Bearer " + localStorage.getItem("token"),
+      //   Authorization: "Bearer " + sessionStorage.getItem("token"),
       // },
     })
       .then((res) => {
@@ -105,7 +107,7 @@ function DetailFeedBody() {
   };
 
   const handleWriteComment = (pageNum, event) => {
-    if (!localStorage.getItem("token")) {
+    if (!sessionStorage.getItem("token")) {
       handleNotiModal();
       return;
     }
@@ -113,7 +115,7 @@ function DetailFeedBody() {
       url: "/api/v1/user/board/" + id + "/comment",
       method: "POST",
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
       data: {
         content: comment,
@@ -131,7 +133,7 @@ function DetailFeedBody() {
   useEffect(() => {
     handleGetComments();
     handleLikeCounts();
-  }, [isClicked, comment]);
+  }, [isClicked]);
 
   return (
     <BodyContainer>
@@ -165,9 +167,7 @@ function DetailFeedBody() {
 
           {comments.map((comment, idx) => (
             <CommentsData key={idx}>
-              <span>
-                <i className="bi bi-person-circle"></i>
-              </span>
+              <span>{userProfileImg === "" ? <i className="bi bi-person-circle"> </i> : <img src={userProfileImg} alt="user profile" style={{ width: "300px", height: "auto" }} />}</span>
               <CommentUser> {comment.userInfo.userName}</CommentUser>
               <div> {comment.commentInfo.content}</div>
               <CommentDate>{dayjs(comment.commentInfo.updateDate).format("YYYY.MM.DD HH:mm")}</CommentDate>

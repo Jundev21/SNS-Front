@@ -5,8 +5,16 @@ import { useNavigate, useLocation } from "react-router-dom";
 import HoverModal from "components/modal/HoverModal";
 import LoadingAnimation from "components/modal/LoadingAnimation";
 import AskModal from "components/modal/AskModal";
+import { useAppSelector } from "redux/hooks";
+import { useAppDispatch } from "redux/hooks";
+import { setUserProfile } from "../../redux/dataSlice";
 
 function Mypage() {
+  const { userProfileImg } = useAppSelector((state) => state.searchState);
+
+  const [userProfileImgHook, setUserProfileImgHook] = useState(userProfileImg);
+  const [updateUserProfileImg, setUpdateUserProfileImg] = useState("");
+
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [email, setEmail] = useState("");
@@ -17,6 +25,7 @@ function Mypage() {
   const [notiModal, setNotiModal] = useState(false);
   const [currModalContent, setCurrModalContent] = useState("");
   const [askModal, setAskModal] = useState(false);
+  const dispatch = useAppDispatch();
 
   const handleNotiModal = () => {
     setNotiModal((e) => !e);
@@ -34,7 +43,7 @@ function Mypage() {
       url: "/api/v1/users",
       method: "GET",
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
     })
       .then((res) => {
@@ -42,7 +51,7 @@ function Mypage() {
         setUserInfo(res.data.responseBody);
       })
       .catch((error) => {
-        // navigate("/authentication/sign-in");
+        navigate("/");
       });
   };
 
@@ -51,6 +60,23 @@ function Mypage() {
     handleUserInfo();
   }, []);
 
+  // const handleFileChange = (e) => {
+  //   setUserProfileImgHook(encodeFileToBase64(e.target.files[0]));
+  // };
+
+  const handleFileChange = (e) => {
+    setUpdateUserProfileImg(e.target.files[0]);
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    return new Promise((resolve) => {
+      reader.onload = () => {
+        setUserProfileImgHook(reader.result); // 파일의 컨텐츠
+        resolve();
+      };
+    });
+  };
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
@@ -78,19 +104,32 @@ function Mypage() {
       return;
     }
 
+    const fomData = new FormData();
+
+    if (updateUserProfileImg) {
+      fomData.append("image", updateUserProfileImg);
+    }
+
+    const updatedUserInfo = {
+      userEmail: email,
+      password: password,
+    };
+
+    fomData.append("memberUpdateRequest", new Blob([JSON.stringify(updatedUserInfo)], { type: "application/json" }));
+
     axios({
       url: "/api/v1/users",
-      method: "PUT",
+      method: "POST",
       withCredentials: true,
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
-      data: {
-        userEmail: email,
-        password: password,
-      },
+      data: fomData,
+      "Content-Type": "multipart/form-data",
     })
-      .then((res) => {})
+      .then((res) => {
+        dispatch(setUserProfile(res.data.responseBody.userProfileImgUrl));
+      })
       .catch((error) => {
         setCurrModalContent("수정 실패하였습니다.");
         // navigate("/authentication/sign-in");
@@ -106,12 +145,12 @@ function Mypage() {
       method: "DELETE",
       withCredentials: true,
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
     })
       .then((res) => {
         setCurrModalContent("회원탈퇴가 완료되었습니다.");
-        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
         // navigate("/");
         // setNotiModal(true);
       })
@@ -136,12 +175,17 @@ function Mypage() {
         ) : (
           <MemberContainer>
             <LeftContainer>
-              <UserIcon>
-                <i className="bi bi-person-circle"> </i>
-              </UserIcon>
+              {userInfo.userProfileImgUrl === "" && (
+                <UserIcon>
+                  <i className="bi bi-person-circle" />{" "}
+                </UserIcon>
+              )}
+              {userInfo.userProfileImgUrl !== "" && updateUserProfileImg === "" && <ImageThumbnail src={userInfo.userProfileImgUrl} />}
+              {updateUserProfileImg !== "" && updateUserProfileImg !== "" && <ImageThumbnail src={userProfileImgHook} />}
+
               <InputFile>
                 <label htmlFor="formFile" className="form-label"></label>
-                <input className="form-control" type="file" id="formFile" />
+                <input className="form-control" type="file" id="formFile" onChange={handleFileChange} />
               </InputFile>
             </LeftContainer>
 
@@ -203,7 +247,6 @@ const MemberContainer = styled.div`
 
 const LeftContainer = styled.div`
   font-size: 100px;
-
   width: 40%;
 `;
 const RightContainer = styled.div`
@@ -252,4 +295,15 @@ const InputFile = styled.div`
 
 const ID = styled.div`
   padding: 7px 12px;
+`;
+
+const ImageBox = styled.div`
+  width: 380px;
+  height: 220px;
+  overflow: hidden;
+`;
+
+const ImageThumbnail = styled.img`
+  width: 100%;
+  height: 100%;
 `;

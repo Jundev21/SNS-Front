@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { NativeEventSource, EventSourcePolyfill } from "event-source-polyfill";
 
 function Notification() {
   const [alarms, setAlarms] = useState([]);
@@ -10,14 +11,25 @@ function Notification() {
 
   useEffect(() => {
     handleGetAlarm();
+    const eventSource = new EventSourcePolyfill("http://localhost:8080/api/v1/users/notification/subscribe", {
+      headers: {
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+      heartbeatTimeout: 86400000,
+      withCredentials: true,
+      "Content-Type": "text/event-stream",
+    });
 
-    const eventSource = new EventSource("/api/v1/users/notification/subscribe?token=" + localStorage.getItem("token"), { withCredentials: true });
+    eventSource.onmessage = (event) => {
+      console.log(event.data);
+    };
 
     eventSource.addEventListener("open", function (event) {
-      console.log("connection is connected");
+      console.log("connection is connected from client");
     });
 
     eventSource.addEventListener("alarm", function (event) {
+      console.log("새로운알람 받았습니다", event.alarms);
       setNewAlarms(1);
       handleGetAlarm();
     });
@@ -35,12 +47,12 @@ function Notification() {
     };
   }, []);
 
-  const handleGetAlarm = useCallback(() => {
+  const handleGetAlarm = () => {
     axios({
       url: "/api/v1/users/notification",
       method: "GET",
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
     })
       .then((res) => {
@@ -48,10 +60,9 @@ function Notification() {
         // setTotalPage(res.data.result.totalPages);
       })
       .catch((error) => {
-        console.log(error);
-        // navigate('/authentication/sign-in');
+        navigate("/");
       });
-  }, []);
+  };
 
   const HandleNotification = () => {
     setNewAlarms(0);
@@ -78,11 +89,11 @@ const NotiParent = styled.span`
 
 const NotiChild = styled.span`
   position: absolute;
-  top: -3px;
-  right: -12px;
+  top: 0px;
+  right: -4px;
   background-color: red;
   color: white;
   font-size: 16px;
-  padding: 8px 8px;
+  padding: 6px;
   border-radius: 100%;
 `;

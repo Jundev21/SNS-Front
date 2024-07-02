@@ -1,14 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "../store";
+import type { RootState } from "./store";
 
 interface searchWordState {
   searchWord: string;
   orderCommand: string;
+  userProfileImg: string;
 }
 
 const initialState = {
-  searchWord: "최신순",
+  searchWord: "",
   orderCommand: "createdTime",
+  userProfileImg: "",
 } as searchWordState;
 
 export const searchSlice = createSlice({
@@ -21,10 +23,13 @@ export const searchSlice = createSlice({
     setOrderCommandTK: (state, action: PayloadAction<string>) => {
       state.orderCommand = action.payload;
     },
+    setUserProfile: (state, action: PayloadAction<string>) => {
+      state.userProfileImg = action.payload;
+    },
   },
 });
 
-export const { setSearchWordTK, setOrderCommandTK } = searchSlice.actions;
+export const { setSearchWordTK, setOrderCommandTK, setUserProfile } = searchSlice.actions;
 
 export const selectWord = (state: RootState) => state.searchState.searchWord;
 

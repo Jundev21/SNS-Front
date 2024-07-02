@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
-import { useAppSelector } from "../../hooks";
-import { useAppDispatch } from "../../hooks";
+import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch } from "../../redux/hooks";
 import { setOrderCommandTK } from "../../redux/dataSlice";
 import { listData } from "../../ListOrderData";
 

@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useAppSelector } from "../../hooks";
+import { useAppSelector } from "../../redux/hooks";
 import Pagination from "../Pagination";
-import RenderContent from "./RenderContent";
-import BodyTitle from "./BodyTitle";
+import RenderContent from "../body/RenderContent";
+import BodyTitle from "../body/BodyTitle";
 import { useNavigate } from "react-router-dom";
 import HoverModal from "components/modal/HoverModal";
 
@@ -30,7 +30,7 @@ function WriteFeedBody() {
       url: "/api/v1/board",
       method: "POST",
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
       data: {
         title: title,

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Logo from "../../img/logo.jpg";
-import { useAppDispatch } from "../../hooks";
+import { useAppDispatch } from "../../redux/hooks";
 import { setSearchWordTK } from "../../redux/dataSlice";
 
 function HeaderLogo() {
@@ -10,15 +10,15 @@ function HeaderLogo() {
     let getSessionData = sessionStorage.getItem("SearchHistory");
 
     if (!getSessionData) {
-      sessionStorage.setItem("SearchHistory", JSON.stringify(["번개장터"]));
+      sessionStorage.setItem("SearchHistory", JSON.stringify([""]));
     } else {
       let historyArr: Array<string> = JSON.parse(getSessionData);
-      historyArr.unshift("번개장터");
+      historyArr.unshift("");
       let newData = new Set(historyArr);
       let makeArr = [...newData];
       sessionStorage.setItem("SearchHistory", JSON.stringify(makeArr));
     }
-    dispatch(setSearchWordTK("번개장터"));
+    dispatch(setSearchWordTK(""));
   };
 
   return (

@@ -1,14 +1,12 @@
 import styled from "styled-components";
-import Comment from "../comment/Comment";
 import axios from "axios";
 import dayjs from "dayjs";
-import HoverModal from "components/modal/HoverModal";
 
 import { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import AskModal from "components/modal/AskModal";
+import { useNavigate, useLocation } from "react-router-dom";
+import HoverModal from "components/modal/HoverModal";
 
-function MyDetailFeedBody() {
+function EditMyWriteFeedBody() {
   const { state } = useLocation();
   const [page, setPage] = useState(0);
   const [title, setTitle] = useState(state.title);
@@ -16,58 +14,33 @@ function MyDetailFeedBody() {
   const [body, setBody] = useState(state.contents);
   const [date, setDate] = useState(dayjs(state.createdTime).format("YYYY-MM-DD HH:mm"));
   const [commentDate, setCommentDate] = useState();
-
   const [id, setId] = useState(state.id);
-
   const [likes, setLikes] = useState(0);
   const [comments, setComments] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
   const [comment, setComment] = useState();
-  const [isClicked, setIsClicked] = useState(state.isClicked);
   const [notiModal, setNotiModal] = useState(false);
   const [currModalContent, setCurrModalContent] = useState("");
-  const [askDelete, setAskDelete] = useState(false);
 
   const navigate = useNavigate();
-
   const handleNotiModal = () => {
     setNotiModal((e) => !e);
   };
 
   const handleLikePost = (event) => {
-    if (!localStorage.getItem("token")) {
-      handleNotiModal();
-      return;
-    }
-    if (isClicked) {
-      axios({
-        url: "/api/v1/favorite/board/" + id,
-        method: "DELETE",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
+    axios({
+      url: "/api/v1/favorite/board/" + id,
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+    })
+      .then((res) => {
+        handleLikeCounts();
       })
-        .then((res) => {
-          handleLikeCounts();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } else {
-      axios({
-        url: "/api/v1/favorite/board/" + id,
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
-        .then((res) => {
-          handleLikeCounts();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleLikeCounts = (event) => {
@@ -75,12 +48,11 @@ function MyDetailFeedBody() {
       url: "/api/v1/favorite/board/" + id,
       method: "GET",
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
     })
       .then((res) => {
         setLikes(res.data.responseBody.favoriteNumber);
-        setIsClicked(res.data.responseBody.isClicked);
       })
       .catch((error) => {
         console.log(error);
@@ -97,29 +69,26 @@ function MyDetailFeedBody() {
       // url: '/api/v1/board/' + id + '/comments?size=5&sort=id&page=' + pageNum,
       url: "/api/v1/user/board/" + id + "/comment",
       method: "GET",
-      // headers: {
-      //   Authorization: "Bearer " + localStorage.getItem("token"),
-      // },
+      headers: {
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
     })
       .then((res) => {
         setComments(res.data.responseBody);
         setCommentDate(res.data.createdTime);
-        // setTotalPage(res.data.boardGetResponse.totalPages);
+        setTotalPage(res.data.boardGetResponse.totalPages);
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
   const handleWriteComment = (pageNum, event) => {
-    if (!localStorage.getItem("token")) {
-      handleNotiModal();
-      return;
-    }
     axios({
       url: "/api/v1/user/board/" + id + "/comment",
       method: "POST",
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
       data: {
         content: comment,
@@ -134,65 +103,80 @@ function MyDetailFeedBody() {
       });
   };
 
-  const handleModify = () => {
-    navigate("/edit/my/feed", { state: state });
-  };
-
-  const handlAskModal = () => {
-    setCurrModalContent("삭제하시겠습니까?");
-    setNotiModal(true);
-  };
-
-  const handleDelete = () => {
+  const updateWritePost = (data) => {
     axios({
       url: "/api/v1/board/" + id,
-      method: "DELETE",
+      method: "PUT",
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+      data: {
+        title: title,
+        content: body,
       },
     })
       .then((res) => {
-        navigate("/my/feed");
+        navigate("/detail/my/feed", { state: { ...data, title: title, contents: body } });
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
+  const CancleEdit = () => {
+    navigate("/detail/my/feed", { state: state });
+  };
+
+  const handleDelete = (id) => {
+    axios({
+      url: "/api/v1/board/" + id,
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+    })
+      .then((res) => {
+        setCurrModalContent("게시물이 삭제되었습니다.");
+        navigate("/my/feed");
+        setNotiModal(true);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
     handleGetComments();
     handleLikeCounts();
-  }, [isClicked, comment]);
+  }, []);
 
   return (
     <BodyContainer>
       <BodyWrapper>
         <MainContent>
-          <MainSubTitle>나의 게시글 보기</MainSubTitle>
+          <MainSubTitle>나의 게시글 수정</MainSubTitle>
           <TitleContainer>
-            <h3> {title}</h3>
+            <input type="email" className="form-control p-2" id="title1" placeholder="제목을 입력해주세요." onChange={(v) => setTitle(v.target.value)} value={title} />
             <SubtitleContainer>
               <SubTitle> {writer}</SubTitle>
               <SubTitle>{date}</SubTitle>
             </SubtitleContainer>
           </TitleContainer>
-          <ContentContainer>{body}</ContentContainer>
+          <textarea className="form-control mh-100" id="content1" rows="8" placeholder="내용을 입력해주세요." onChange={(v) => setBody(v.target.value)} value={body}></textarea>
           <LikesBtn onClick={handleLikePost}>
-            {isClicked ? (
-              <p className="bi bi-hand-thumbs-up-fill fs-6">
-                <LikeNumber>{likes}</LikeNumber>
-              </p>
-            ) : (
-              <p className="bi bi-hand-thumbs-up fs-6">
-                <LikeNumber>{likes}</LikeNumber>
-              </p>
-            )}
+            <p className="bi bi-hand-thumbs-up fs-6">
+              <LikeNumber>{likes}</LikeNumber>
+            </p>
           </LikesBtn>
         </MainContent>
         <EditBtn>
-          <Edit type="button" className="btn btn-primary px-3  btn-sm me-md-2" onClick={handleModify}>
-            수정
+          <Edit type="button" className="btn btn-primary px-3  btn-sm me-md-2" onClick={CancleEdit}>
+            취소
           </Edit>
-          <Delete type="button" className="btn btn-outline-danger btn-sm px-3" onClick={handlAskModal}>
+          <Edit type="button" className="btn btn-primary px-3  btn-sm me-md-2" onClick={() => updateWritePost(state)}>
+            수정 완료
+          </Edit>
+          <Delete type="button" className="btn btn-outline-danger btn-sm px-3" onClick={() => handleDelete(id)}>
             삭제
           </Delete>
         </EditBtn>
@@ -200,10 +184,10 @@ function MyDetailFeedBody() {
         <CommentContainer>
           <MainSubTitle>댓글</MainSubTitle>
 
-          {comments.map((comment, idx) => (
-            <CommentsData key={idx}>
+          {comments.map((comment) => (
+            <CommentsData>
               <span>
-                <i className="bi bi-person-circle"></i>
+                <i class="bi bi-person-circle"></i>
               </span>
               <CommentUser> {comment.userInfo.userName}</CommentUser>
               <div> {comment.commentInfo.content}</div>
@@ -222,13 +206,14 @@ function MyDetailFeedBody() {
             </form>
           </CommentContainer>
         </CommentContainer>
-        {notiModal && <AskModal handleModal={handleNotiModal} currModalContent={currModalContent} activeAxios={handleDelete} />}
+
+        {notiModal && <HoverModal handleModal={handleNotiModal} currModalContent={currModalContent} />}
       </BodyWrapper>
     </BodyContainer>
   );
 }
 
-export default MyDetailFeedBody;
+export default EditMyWriteFeedBody;
 
 const BodyContainer = styled.div`
   width: 100%;

@@ -1,16 +1,16 @@
 import styled from "styled-components";
-import Header from "./components/headerComponents/Header";
-import Body from "./components/bodyComponents/Body";
+import Header from "./components/header/Header";
+import Body from "./components/body/Body";
 import { BrowserRouter, HashRouter, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
-import WriteFeedBody from "./components/bodyComponents/WriteFeedBody";
-import MyFeedBody from "./components/bodyComponents/MyFeedBody";
-import DetailFeedBody from "./components/bodyComponents/DetailFeedBody";
-import MyDetailFeedBody from "./components/bodyComponents/MyDetailFeedBody";
-import EditMyWriteFeedBody from "./components/bodyComponents/EditMyWriteFeedBody ";
-import NotificationBody from "./components/bodyComponents/NotificationBody";
-import Mypage from "./components/bodyComponents/Mypage";
-import AuthLayout from "./components/AuthLayout";
+import WriteFeedBody from "./components/feed/WriteFeedBody";
+import MyFeedBody from "./components/myFeed/MyFeedBody";
+import DetailFeedBody from "./components/body/DetailFeedBody";
+import MyDetailFeedBody from "./components/body/MyDetailFeedBody";
+import EditMyWriteFeedBody from "./components/body/EditMyWriteFeedBody ";
+import NotificationBody from "./components/notification/NotificationBody";
+import Mypage from "./components/body/Mypage";
+import AuthLayout from "./components/router/AuthLayout";
 import Login from "./components/login/Login";
 
 function App() {
@@ -26,7 +26,6 @@ function App() {
           <Route element={<AuthLayout />}>
             <Route path="/my/feed" element={<MyFeedBody />}></Route>
             <Route path="/write/feed" element={<WriteFeedBody />}></Route>
-
             <Route path="/detail/my/feed" element={<MyDetailFeedBody />}></Route>
             <Route path="/edit/my/feed" element={<EditMyWriteFeedBody />}></Route>
             <Route path="/detail/my/notification" element={<NotificationBody />}></Route>

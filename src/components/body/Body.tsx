@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useAppSelector } from "../../hooks";
+import { useAppSelector } from "../../redux/hooks";
 import Pagination from "../Pagination";
 import RenderContent from "./RenderContent";
 import BodyTitle from "./BodyTitle";
 import LoadingAnimation from "../modal/LoadingAnimation";
+import DynamicBody from "./DynamicBody";
 
 function Body() {
   const { searchWord, orderCommand } = useAppSelector((state) => state.searchState);
@@ -24,9 +25,22 @@ function Body() {
     axios({
       url: `/api/v1/board?size=12&sort=${orderCommand},desc&page=` + pageNum,
       method: "GET",
-      // headers: {
-      //   Authorization: "Bearer " + localStorage.getItem("token"),
-      // },
+    })
+      .then((res) => {
+        setIsLoading(false);
+        setPosts(res.data.responseBody.content);
+        setTitleCount(res.data.responseBody.totalElements);
+        setTotalPageNum(res.data.responseBody.totalPages);
+      })
+      .catch((error) => {
+        // navigate("/authentication/sign-in");
+      });
+  };
+
+  const handleGetSearchPosts = (pageNum: any, searchWord: String) => {
+    axios({
+      url: `/api/v1/board/searching/${searchWord}?size=12&sort=${orderCommand},desc&page=` + pageNum,
+      method: "GET",
     })
       .then((res) => {
         setIsLoading(false);
@@ -41,7 +55,11 @@ function Body() {
 
   useEffect(() => {
     // @ts-ignore
-    handleGetPosts(currPageNum);
+    if (searchWord === "") {
+      handleGetPosts(currPageNum);
+    } else {
+      handleGetSearchPosts(currPageNum, searchWord);
+    }
   }, [searchWord, orderCommand, currPageNum]);
 
   return (

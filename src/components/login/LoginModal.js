@@ -95,24 +95,13 @@ const Title = styled.h2`
 `;
 
 const LoginModal = (props) => {
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [userName, setUserName] = useState("");
+  const [userLoginId, setUserLoginId] = useState("");
   const [password, setPassword] = useState("");
-  const [open, setOpen] = React.useState(false);
-  const [dialogTitle, setDialogTitle] = React.useState("");
-  const [dialogMessage, setDialogMessage] = React.useState("");
+
   const navigate = useNavigate();
 
-  const openLoginModal = () => {
-    setShowLoginModal(true);
-  };
-
-  const closeLoginModal = () => {
-    setShowLoginModal(false);
-  };
-
   const handleUserNameChange = (e) => {
-    setUserName(e.target.value);
+    setUserLoginId(e.target.value);
   };
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -124,12 +113,12 @@ const LoginModal = (props) => {
       url: "/api/v1/users/login",
       method: "POST",
       data: {
-        userName: userName,
+        userLoginId: userLoginId,
         password: password,
       },
     })
       .then((res) => {
-        localStorage.setItem("token", res.data.responseBody.token);
+        sessionStorage.setItem("token", res.data.responseBody.token);
         navigate("/");
       })
       .catch((error) => {

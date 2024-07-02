@@ -1,12 +1,11 @@
 import styled from "styled-components";
 import SearchBar from "./SearchBar";
-import UserInfo from "./UserInfo";
 import HeaderLogo from "./HeaderLogo";
 import Login from "../login/Login";
 import Register from "../login/Register";
 import React, { useEffect, useState } from "react";
 import Feed from "../feed/Feed";
-import MyFeed from "../feed/MyFeed";
+import MyFeed from "../myFeed/MyFeed";
 import WriteFeed from "../feed/WriteFeed";
 import Notification from "../notification/Notification";
 import LogOut from "../login/LogOut";
@@ -20,10 +19,10 @@ function Header() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (sessionStorage.getItem("token")) {
       setIsLogin(true);
     }
-  }, [localStorage.getItem("token")]);
+  }, [sessionStorage.getItem("token")]);
 
   const HandleBoard = () => {
     navigate("/");
@@ -39,7 +38,7 @@ function Header() {
         <Feed />
         <WriteFeed />
         <MyFeed />
-        {localStorage.getItem("token") ? (
+        {isLogin ? (
           <LoginInfo>
             <MyInfo setIsLogin={setIsLogin} />
             <Notification />

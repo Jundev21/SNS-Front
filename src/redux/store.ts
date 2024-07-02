@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import searchReducer from "../src/redux/dataSlice";
+import searchReducer from "./dataSlice";
 
 const store = configureStore({
   reducer: {

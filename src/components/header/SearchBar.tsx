@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { useAppDispatch } from "../../hooks";
+import { useAppDispatch } from "../../redux/hooks";
 import { setSearchWordTK, setOrderCommandTK } from "../../redux/dataSlice";
-import RenderAutoCom from "../searchBarComponents/RenderAutoCom";
+import RenderAutoCom from "../searchBar/RenderAutoCom";
 
 function SearchBar() {
   const [searchWord, setSearchWord] = useState("");
@@ -18,6 +18,14 @@ function SearchBar() {
   //     const liveWord = await axios.get(
   //       `https://api.stg-bunjang.co.kr/api/1/search/suggests_keyword.json?q=${searchWord}&type=product&v=2`
   //     );
+  //     setAutoComplete(liveWord.data.keywords);
+  //   };
+  //   autoData();
+  // }, [searchWord]);
+
+  // useEffect(() => {
+  //   const autoData = async () => {
+  //     const liveWord = await axios.get(`https:///api/v1/search?searchString=` + searchWord);
   //     setAutoComplete(liveWord.data.keywords);
   //   };
   //   autoData();
@@ -54,7 +62,7 @@ function SearchBar() {
       }
 
       setSearchList(false);
-      dispatch(setOrderCommandTK("date"));
+      dispatch(setOrderCommandTK("createdTime"));
       dispatch(setSearchWordTK(searchWord));
     }
   };
@@ -72,11 +80,10 @@ function SearchBar() {
       <SearchWrapper>
         <SearchForm onSubmit={handleSubmit}>
           <FormInput ref={textInput} type="text" onChange={handleChange} placeholder="검색" value={searchWord} onClick={handleInput} />
-
           {searchList === true && <RenderAutoCom searchWord={searchWord} autoComplete={autoComplete} setSearchWord={setSearchWord} setSearchList={setSearchList} />}
         </SearchForm>
         {searchWord !== "" && <ClearInput onClick={() => handleClear()}>X</ClearInput>}
-        <div className="bi bi-search" onClick={() => handleSubmit(null)}></div>
+        <SearchIcon className="bi bi-search" onClick={() => handleSubmit(null)}></SearchIcon>
       </SearchWrapper>
     </SearchContainer>
   );
@@ -106,6 +113,10 @@ const SearchWrapper = styled.div`
 `;
 
 const SearchForm = styled.form``;
+
+const SearchIcon = styled.div`
+  cursor: pointer;
+`;
 
 const FormInput = styled.input`
   width: 100%;

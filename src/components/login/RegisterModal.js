@@ -97,16 +97,18 @@ const RegisterModal = (props) => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [email, setEmail] = useState("");
   const [userName, setUserName] = useState("");
+  const [checkPassword, setCheckPassword] = useState("");
+  const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
   const handleSignUp = (event) => {
     event.preventDefault();
 
-    if (password === "" || passwordConfirm === "" || email === "" || userName === "") {
+    if (password === "" || checkPassword === "" || email === "" || userName === "") {
       alert("다시한번 확인해주세요.");
       return;
-    } else if (password !== passwordConfirm) {
+    } else if (password !== checkPassword) {
       alert("비밀번호가 일치하지 않습니다.");
       return;
     }
@@ -116,8 +118,10 @@ const RegisterModal = (props) => {
       method: "POST",
       withCredentials: true,
       data: {
+        userLoginId: userId,
         userName: userName,
         password: password,
+        checkPassword: checkPassword,
         userEmail: email,
       },
     })
@@ -125,13 +129,17 @@ const RegisterModal = (props) => {
       .catch((error) => {
         props.setCurrModalContent(error.response.data.responseCode);
       });
-    props.setCurrModalContent("회원가입을 축하합니다.");
+    props.setCurrModalContent(userName + " 님 회원가입을 축하합니다.");
     props.handleModal();
     props.handleNotiModal();
   };
 
   const closeLoginModal = () => {
     setShowLoginModal(false);
+  };
+
+  const handleUserId = (e) => {
+    setUserId(e.target.value);
   };
 
   const handleUserNameChange = (e) => {
@@ -147,7 +155,7 @@ const RegisterModal = (props) => {
   };
 
   const handlePasswordConfirm = (e) => {
-    setPasswordConfirm(e.target.value);
+    setCheckPassword(e.target.value);
   };
 
   const handleSubmit = (e) => {
@@ -157,11 +165,11 @@ const RegisterModal = (props) => {
   };
 
   useEffect(() => {
-    const CookiesAccessToken = window.localStorage.getItem("token");
+    const CookiesAccessToken = window.sessionStorage.getItem("token");
     if (CookiesAccessToken) {
       window.confirm("이미 등록된 회원입니다.");
     }
-  }, [window.localStorage.getItem("token")]);
+  }, [window.sessionStorage.getItem("token")]);
 
   return (
     <div>
@@ -172,10 +180,11 @@ const RegisterModal = (props) => {
             <CloseButton onClick={props.handleModal}>&times;</CloseButton>
 
             <Form>
-              <Input placeholder={"아이디"} type="name" name="name" onChange={handleUserNameChange} />
+              <Input placeholder={"아이디"} type="id" name="id" onChange={handleUserId} />
+              <Input placeholder={"이름"} type="name" name="name" onChange={handleUserNameChange} />
               <Input placeholder={"이메일"} type="email" name="email" onChange={handleEmailChange} />
               <Input placeholder={"비밀번호"} type="password" name="password" onChange={handlePasswordChange} />
-              <Input placeholder={"비밀번호 확인"} type="password" name="password" onChange={handlePasswordConfirm} />
+              <Input placeholder={"비밀번호 확인"} type="checkPassword" name="checkPassword" onChange={handlePasswordConfirm} />
               <Button className="btn btn-primary" onClick={handleSignUp}>
                 회원가입
               </Button>
