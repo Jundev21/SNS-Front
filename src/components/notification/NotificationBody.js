@@ -67,7 +67,13 @@ const NotificationContent = styled.li`
   justify-content: space-between;
   padding: 20px 50px;
   border-bottom: 1px solid rgb(238, 238, 238);
+  cursor: pointer;
 
+  &:hover {
+    background: cornflowerblue;
+    color: white;
+    transition: 0.5s;
+  }
   &:first-child {
     border-top: 1px solid rgb(238, 238, 238);
   }
@@ -85,8 +91,6 @@ const NoNotificationContent = styled.li`
   }
 `;
 
-const Message = styled.div`
-  cursor: pointer;
-`;
+const Message = styled.div``;
 
 const MessageDate = styled.div``;

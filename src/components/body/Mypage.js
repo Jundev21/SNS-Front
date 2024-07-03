@@ -10,9 +10,7 @@ import { useAppDispatch } from "redux/hooks";
 import { setUserProfile } from "../../redux/dataSlice";
 
 function Mypage() {
-  const { userProfileImg } = useAppSelector((state) => state.searchState);
-
-  const [userProfileImgHook, setUserProfileImgHook] = useState(userProfileImg);
+  const [userProfilePreview, setUserProfileImgHook] = useState("");
   const [updateUserProfileImg, setUpdateUserProfileImg] = useState("");
 
   const [password, setPassword] = useState("");
@@ -106,12 +104,14 @@ function Mypage() {
 
     const fomData = new FormData();
 
-    if (updateUserProfileImg) {
+    if (updateUserProfileImg !== "" && userProfilePreview !== "") {
       fomData.append("image", updateUserProfileImg);
+    } else {
+      fomData.append("image", userInfo.userProfileImgUrl);
     }
 
     const updatedUserInfo = {
-      userEmail: email,
+      userEmail: email === "" ? userInfo.userEmail : email,
       password: password,
     };
 
@@ -175,13 +175,15 @@ function Mypage() {
         ) : (
           <MemberContainer>
             <LeftContainer>
-              {userInfo.userProfileImgUrl === "" && (
+              {userInfo.userProfileImgUrl === "" && userProfilePreview === "" && (
                 <UserIcon>
                   <i className="bi bi-person-circle" />{" "}
                 </UserIcon>
               )}
-              {userInfo.userProfileImgUrl !== "" && updateUserProfileImg === "" && <ImageThumbnail src={userInfo.userProfileImgUrl} />}
-              {updateUserProfileImg !== "" && updateUserProfileImg !== "" && <ImageThumbnail src={userProfileImgHook} />}
+
+              {userInfo.userProfileImgUrl !== "" && userProfilePreview === "" && <ImageThumbnail src={userInfo.userProfileImgUrl} />}
+              {userInfo.userProfileImgUrl !== "" && userProfilePreview !== "" && <ImageThumbnail src={userProfilePreview} />}
+              {userInfo.userProfileImgUrl === "" && userProfilePreview !== "" && <ImageThumbnail src={userProfilePreview} />}
 
               <InputFile>
                 <label htmlFor="formFile" className="form-label"></label>

@@ -9,7 +9,7 @@ import LoadingAnimation from "../modal/LoadingAnimation";
 import DynamicBody from "./DynamicBody";
 
 function Body() {
-  const { searchWord, orderCommand } = useAppSelector((state) => state.searchState);
+  const { searchWord, orderCommand, userProfileImg } = useAppSelector((state) => state.searchState);
   const [currPageNum, setCurrPageNum] = useState(0);
   const [totalPageNum, setTotalPageNum] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

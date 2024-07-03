@@ -127,7 +127,7 @@ const RegisterModal = (props) => {
     })
       .then((res) => {})
       .catch((error) => {
-        props.setCurrModalContent(error.response.data.responseCode);
+        props.setCurrModalContent(error.response.data.userEmail);
       });
     props.setCurrModalContent(userName + " 님 회원가입을 축하합니다.");
     props.handleModal();

@@ -16,6 +16,7 @@ function MyDetailFeedBody() {
   const [body, setBody] = useState(state.contents);
   const [date, setDate] = useState(dayjs(state.createdTime).format("YYYY-MM-DD HH:mm"));
   const [commentDate, setCommentDate] = useState();
+  const [userProfileImgUrl, setUserProfileImgUrl] = useState(state.basicUserInfoResponse.userProfileUrl);
 
   const [id, setId] = useState(state.id);
 
@@ -171,6 +172,7 @@ function MyDetailFeedBody() {
           <TitleContainer>
             <h3> {title}</h3>
             <SubtitleContainer>
+              <ImageThumbnail src={userProfileImgUrl} alt="user profile" style={{ width: "30px", height: "30px" }} />
               <SubTitle> {writer}</SubTitle>
               <SubTitle>{date}</SubTitle>
             </SubtitleContainer>
@@ -203,7 +205,11 @@ function MyDetailFeedBody() {
           {comments.map((comment, idx) => (
             <CommentsData key={idx}>
               <span>
-                <i className="bi bi-person-circle"></i>
+                {comment.userInfo.userProfileUrl === "" ? (
+                  <i className="bi bi-person-circle"> </i>
+                ) : (
+                  <ImageThumbnail src={comment.userInfo.userProfileUrl} alt="user profile" style={{ width: "30px", height: "30px" }} />
+                )}
               </span>
               <CommentUser> {comment.userInfo.userName}</CommentUser>
               <div> {comment.commentInfo.content}</div>
@@ -309,3 +315,8 @@ const EditBtn = styled.div`
 const Edit = styled.button``;
 
 const Delete = styled.button``;
+
+const ImageThumbnail = styled.img`
+  width: 50px;
+  height: 50px;
+`;

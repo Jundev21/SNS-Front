@@ -9,12 +9,12 @@ import { useAppSelector } from "../../redux/hooks";
 
 function DetailFeedBody() {
   const { state } = useLocation();
-  const { userProfileImg } = useAppSelector((state) => state.searchState);
   const [page, setPage] = useState(0);
   const [title, setTitle] = useState(state.title);
   const [writer, setWriter] = useState(state.basicUserInfoResponse.userName);
   const [body, setBody] = useState(state.contents);
   const [date, setDate] = useState(dayjs(state.createdTime).format("YYYY-MM-DD HH:mm"));
+  const [userProfileImgUrl, setUserProfileImgUrl] = useState(state.basicUserInfoResponse.userProfileUrl);
   const [commentDate, setCommentDate] = useState();
   const [isClicked, setIsClicked] = useState(state.isClicked);
   const [id, setId] = useState(state.id);
@@ -143,6 +143,7 @@ function DetailFeedBody() {
           <TitleContainer>
             <h3> {title}</h3>
             <SubtitleContainer>
+              <ImageThumbnail src={userProfileImgUrl} alt="user profile" style={{ width: "30px", height: "30px" }} />
               <SubTitle> {writer}</SubTitle>
               <SubTitle>{date}</SubTitle>
             </SubtitleContainer>
@@ -167,9 +168,15 @@ function DetailFeedBody() {
 
           {comments.map((comment, idx) => (
             <CommentsData key={idx}>
-              <span>{userProfileImg === "" ? <i className="bi bi-person-circle"> </i> : <img src={userProfileImg} alt="user profile" style={{ width: "300px", height: "auto" }} />}</span>
+              <span>
+                {comment.userInfo.userProfileUrl === "" ? (
+                  <i className="bi bi-person-circle"> </i>
+                ) : (
+                  <ImageThumbnail src={comment.userInfo.userProfileUrl} alt="user profile" style={{ width: "30px", height: "30px" }} />
+                )}
+              </span>
               <CommentUser> {comment.userInfo.userName}</CommentUser>
-              <div> {comment.commentInfo.content}</div>
+              <CommentContent> {comment.commentInfo.content}</CommentContent>
               <CommentDate>{dayjs(comment.commentInfo.updateDate).format("YYYY.MM.DD HH:mm")}</CommentDate>
             </CommentsData>
           ))}
@@ -256,9 +263,19 @@ const CommentDate = styled.div`
 `;
 const CommentUser = styled.span`
   font-size: 16px;
+  padding-left: 15px;
 `;
 
 const LikeNumber = styled.span`
   display: inline-block;
   margin-left: 5px;
+`;
+
+const ImageThumbnail = styled.img`
+  width: 50px;
+  height: 50px;
+`;
+
+const CommentContent = styled.div`
+  padding: 20px 20px;
 `;

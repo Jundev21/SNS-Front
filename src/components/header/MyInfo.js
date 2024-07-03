@@ -60,6 +60,7 @@ function MyInfo({ setIsLogin }) {
   };
   useEffect(() => {
     // @ts-ignore
+    console.log("triger from header");
     handleUserInfo();
   }, [setIsLogin, userProfileImg]);
 
