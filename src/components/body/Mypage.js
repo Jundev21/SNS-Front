@@ -7,7 +7,7 @@ import LoadingAnimation from "components/modal/LoadingAnimation";
 import AskModal from "components/modal/AskModal";
 import { useAppSelector } from "redux/hooks";
 import { useAppDispatch } from "redux/hooks";
-import { setUserProfile } from "../../redux/dataSlice";
+import { setUserProfile, setSearchWordTK } from "../../redux/dataSlice";
 
 function Mypage() {
   const [userProfilePreview, setUserProfileImgHook] = useState("");
@@ -91,7 +91,7 @@ function Mypage() {
     navigate("/");
   };
 
-  const handleUpdateInfo = (event) => {
+  const handleUpdateInfo = async (event) => {
     if (password === "") {
       alert("비밀번호를 입력해주세요");
       return;
@@ -121,6 +121,7 @@ function Mypage() {
       url: "/api/v1/users",
       method: "POST",
       withCredentials: true,
+      credentials: "include",
       headers: {
         Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
@@ -134,6 +135,7 @@ function Mypage() {
         setCurrModalContent("수정 실패하였습니다.");
         // navigate("/authentication/sign-in");
       });
+
     setCurrModalContent("수정이 완료되었습니다.");
     setNotiModal(true);
   };
@@ -308,4 +310,5 @@ const ImageBox = styled.div`
 const ImageThumbnail = styled.img`
   width: 100%;
   height: 100%;
+  border-radius: 50%;
 `;

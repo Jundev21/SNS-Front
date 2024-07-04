@@ -69,7 +69,7 @@ function Body() {
           <LoadingAnimation />
         ) : (
           <>
-            <BodyTitle renderData={titleCount} title={"전체 게시물"} />
+            <BodyTitle renderData={titleCount} currSearchWord={searchWord} title={"전체 게시물"} />
             <RenderContent renderData={posts} currPageNum={currPageNum} title={"전체 게시물"} />
             <Pagination changePage={changePage} totalPageNum={totalPageNum} currPageNum={currPageNum} />
           </>

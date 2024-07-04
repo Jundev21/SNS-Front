@@ -143,7 +143,7 @@ function DetailFeedBody() {
           <TitleContainer>
             <h3> {title}</h3>
             <SubtitleContainer>
-              <ImageThumbnail src={userProfileImgUrl} alt="user profile" style={{ width: "30px", height: "30px" }} />
+              {userProfileImgUrl === "" ? <i className="bi bi-person-circle"> </i> : <ImageThumbnail src={userProfileImgUrl} alt="user profile" style={{ width: "30px", height: "30px" }} />}
               <SubTitle> {writer}</SubTitle>
               <SubTitle>{date}</SubTitle>
             </SubtitleContainer>
@@ -225,7 +225,7 @@ const SubtitleContainer = styled.div`
 
 const SubTitle = styled.span`
   display: inline-block;
-  padding-left: 20px;
+  padding-left: 15px;
 `;
 
 const CommentContainer = styled.div`
@@ -263,7 +263,7 @@ const CommentDate = styled.div`
 `;
 const CommentUser = styled.span`
   font-size: 16px;
-  padding-left: 15px;
+  padding-left: 10px;
 `;
 
 const LikeNumber = styled.span`
@@ -274,6 +274,7 @@ const LikeNumber = styled.span`
 const ImageThumbnail = styled.img`
   width: 50px;
   height: 50px;
+  border-radius: 50%;
 `;
 
 const CommentContent = styled.div`

@@ -13,6 +13,7 @@ import snsImg from "../../img/sns.jpeg";
 import { useNavigate } from "react-router-dom";
 import MyInfo from "./MyInfo";
 import HoverModal from "../modal/HoverModal";
+import { useAppSelector } from "../../redux/hooks";
 
 function Header() {
   const [isLogin, setIsLogin] = useState(false);

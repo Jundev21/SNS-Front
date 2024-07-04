@@ -44,27 +44,25 @@ function SearchBar() {
       e.preventDefault();
     }
 
-    if (searchWord !== "") {
-      let getSessionData = sessionStorage.getItem("SearchHistory");
+    let getSessionData = sessionStorage.getItem("SearchHistory");
 
-      if (!getSessionData) {
-        sessionStorage.setItem("SearchHistory", JSON.stringify([searchWord]));
-      } else {
-        let historyArr: Array<string> = JSON.parse(getSessionData);
+    if (!getSessionData) {
+      sessionStorage.setItem("SearchHistory", JSON.stringify([searchWord]));
+    } else {
+      let historyArr: Array<string> = JSON.parse(getSessionData);
 
-        if (historyArr.length > 6) {
-          historyArr.pop();
-        }
-        historyArr.unshift(searchWord);
-        let newData = new Set(historyArr);
-        let makeArr = [...newData];
-        sessionStorage.setItem("SearchHistory", JSON.stringify(makeArr));
+      if (historyArr.length > 6) {
+        historyArr.pop();
       }
-
-      setSearchList(false);
-      dispatch(setOrderCommandTK("createdTime"));
-      dispatch(setSearchWordTK(searchWord));
+      historyArr.unshift(searchWord);
+      let newData = new Set(historyArr);
+      let makeArr = [...newData];
+      sessionStorage.setItem("SearchHistory", JSON.stringify(makeArr));
     }
+
+    setSearchList(false);
+    dispatch(setOrderCommandTK("createdTime"));
+    dispatch(setSearchWordTK(searchWord));
   };
 
   const handleClear = () => {

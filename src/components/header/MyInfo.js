@@ -20,7 +20,6 @@ function MyInfo({ setIsLogin }) {
   const handleLogout = () => {
     sessionStorage.removeItem("token");
     dispatch(setUserProfile(""));
-
     setIsLogin(false);
     navigate("/");
   };
@@ -43,31 +42,32 @@ function MyInfo({ setIsLogin }) {
     navigate("/my/info");
   };
 
-  const handleUserInfo = () => {
-    axios({
-      url: "/api/v1/users",
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + sessionStorage.getItem("token"),
-      },
-    })
-      .then((res) => {
-        setUpdateUserProfileImg(res.data.responseBody.userProfileImgUrl);
-      })
-      .catch((error) => {
-        navigate("/");
-      });
-  };
   useEffect(() => {
-    // @ts-ignore
-    console.log("triger from header");
+    const handleUserInfo = () => {
+      axios({
+        url: "/api/v1/users",
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      })
+        .then((res) => {
+          setUpdateUserProfileImg(res.data.responseBody.userProfileImgUrl);
+        })
+        .catch((error) => {
+          navigate("/");
+        });
+    };
     handleUserInfo();
   }, [setIsLogin, userProfileImg]);
-
   return (
     <ModalWrapper>
       <HoverContainer onMouseOver={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-        <UserIcon>{updateUserProfileImg === "" ? <i className="bi bi-person-circle"> </i> : <ImageThumbnail src={updateUserProfileImg} />}</UserIcon>
+        <UserIcon>
+          {updateUserProfileImg === "" && <i className="bi bi-person-circle"> </i>}
+
+          {updateUserProfileImg !== "" && <ImageThumbnail src={updateUserProfileImg} />}
+        </UserIcon>
         {isHovered && (
           <ModalContents>
             <ModalList onClick={handleMyPage}> 마이페이지</ModalList>
@@ -124,6 +124,7 @@ const ModalList = styled.li`
 `;
 
 const ImageThumbnail = styled.img`
-  width: 100%;
-  height: 100%;
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
 `;

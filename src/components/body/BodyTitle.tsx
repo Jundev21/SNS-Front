@@ -8,6 +8,7 @@ import { listData } from "../../ListOrderData";
 interface TitleProps {
   renderData: any;
   title: string;
+  currSearchWord: any;
 }
 
 interface OrderType {
@@ -15,7 +16,7 @@ interface OrderType {
   order: string;
 }
 
-function BodyTitle({ renderData, title }: TitleProps) {
+function BodyTitle({ renderData, currSearchWord, title }: TitleProps) {
   const [currentTag, setCurrnetTag] = useState(0);
   const getSearchWord = useAppSelector((state) => state.searchState.searchWord);
   const dispatch = useAppDispatch();
@@ -32,6 +33,11 @@ function BodyTitle({ renderData, title }: TitleProps) {
   return (
     <BodyTitleContainer>
       <SearchResult>
+        {currSearchWord !== "" && (
+          <>
+            <h6>'{currSearchWord}' </h6> &nbsp; 검색 / &nbsp;
+          </>
+        )}
         {title} &nbsp;
         <SearchNum> {renderData.length !== 0 ? renderData : 0} </SearchNum> &nbsp; 개
       </SearchResult>

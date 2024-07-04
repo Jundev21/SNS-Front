@@ -165,72 +165,78 @@ function MyDetailFeedBody() {
   }, [isClicked, comment]);
 
   return (
-    <BodyContainer>
-      <BodyWrapper>
-        <MainContent>
-          <MainSubTitle>나의 게시글 보기</MainSubTitle>
-          <TitleContainer>
-            <h3> {title}</h3>
-            <SubtitleContainer>
-              <ImageThumbnail src={userProfileImgUrl} alt="user profile" style={{ width: "30px", height: "30px" }} />
-              <SubTitle> {writer}</SubTitle>
-              <SubTitle>{date}</SubTitle>
-            </SubtitleContainer>
-          </TitleContainer>
-          <ContentContainer>{body}</ContentContainer>
-          <LikesBtn onClick={handleLikePost}>
-            {isClicked ? (
-              <p className="bi bi-hand-thumbs-up-fill fs-6">
-                <LikeNumber>{likes}</LikeNumber>
-              </p>
-            ) : (
-              <p className="bi bi-hand-thumbs-up fs-6">
-                <LikeNumber>{likes}</LikeNumber>
-              </p>
-            )}
-          </LikesBtn>
-        </MainContent>
-        <EditBtn>
-          <Edit type="button" className="btn btn-primary px-3  btn-sm me-md-2" onClick={handleModify}>
-            수정
-          </Edit>
-          <Delete type="button" className="btn btn-outline-danger btn-sm px-3" onClick={handlAskModal}>
-            삭제
-          </Delete>
-        </EditBtn>
-
-        <CommentContainer>
-          <MainSubTitle>댓글</MainSubTitle>
-
-          {comments.map((comment, idx) => (
-            <CommentsData key={idx}>
-              <span>
-                {comment.userInfo.userProfileUrl === "" ? (
-                  <i className="bi bi-person-circle"> </i>
+    <>
+      {state.length === 0 ? (
+        <Warnning> {title} 이 비어있습니다.</Warnning>
+      ) : (
+        <BodyContainer>
+          <BodyWrapper>
+            <MainContent>
+              <MainSubTitle>나의 게시글 보기</MainSubTitle>
+              <TitleContainer>
+                <h3> {title}</h3>
+                <SubtitleContainer>
+                  {userProfileImgUrl === "" ? <i className="bi bi-person-circle"> </i> : <ImageThumbnail src={userProfileImgUrl} alt="user profile" style={{ width: "30px", height: "30px" }} />}
+                  <SubTitle> {writer}</SubTitle>
+                  <SubTitle>{date}</SubTitle>
+                </SubtitleContainer>
+              </TitleContainer>
+              <ContentContainer>{body}</ContentContainer>
+              <LikesBtn onClick={handleLikePost}>
+                {isClicked ? (
+                  <p className="bi bi-hand-thumbs-up-fill fs-6">
+                    <LikeNumber>{likes}</LikeNumber>
+                  </p>
                 ) : (
-                  <ImageThumbnail src={comment.userInfo.userProfileUrl} alt="user profile" style={{ width: "30px", height: "30px" }} />
+                  <p className="bi bi-hand-thumbs-up fs-6">
+                    <LikeNumber>{likes}</LikeNumber>
+                  </p>
                 )}
-              </span>
-              <CommentUser> {comment.userInfo.userName}</CommentUser>
-              <div> {comment.commentInfo.content}</div>
-              <CommentDate>{dayjs(comment.commentInfo.updateDate).format("YYYY.MM.DD HH:mm")}</CommentDate>
-            </CommentsData>
-          ))}
+              </LikesBtn>
+            </MainContent>
+            <EditBtn>
+              <Edit type="button" className="btn btn-primary px-3  btn-sm me-md-2" onClick={handleModify}>
+                수정
+              </Edit>
+              <Delete type="button" className="btn btn-outline-danger btn-sm px-3" onClick={handlAskModal}>
+                삭제
+              </Delete>
+            </EditBtn>
 
-          <CommentContainer>
-            <form className="form-group  mb-2 row">
-              <div className="form-group col">
-                <textarea value={comment} className="form-control" id="inputPassword2" placeholder="댓글 추가" onChange={(v) => setComment(v.target.value)}></textarea>
-              </div>
-              <button type="button" className="btn btn-primary col-1" onClick={handleWriteComment}>
-                등록
-              </button>
-            </form>
-          </CommentContainer>
-        </CommentContainer>
-        {notiModal && <AskModal handleModal={handleNotiModal} currModalContent={currModalContent} activeAxios={handleDelete} />}
-      </BodyWrapper>
-    </BodyContainer>
+            <CommentContainer>
+              <MainSubTitle>댓글</MainSubTitle>
+
+              {comments.map((comment, idx) => (
+                <CommentsData key={idx}>
+                  <span>
+                    {comment.userInfo.userProfileUrl === "" ? (
+                      <i className="bi bi-person-circle"> </i>
+                    ) : (
+                      <ImageThumbnail src={comment.userInfo.userProfileUrl} alt="user profile" style={{ width: "30px", height: "30px" }} />
+                    )}
+                  </span>
+                  <CommentUser> {comment.userInfo.userName}</CommentUser>
+                  <div> {comment.commentInfo.content}</div>
+                  <CommentDate>{dayjs(comment.commentInfo.updateDate).format("YYYY.MM.DD HH:mm")}</CommentDate>
+                </CommentsData>
+              ))}
+
+              <CommentContainer>
+                <form className="form-group  mb-2 row">
+                  <div className="form-group col">
+                    <textarea value={comment} className="form-control" id="inputPassword2" placeholder="댓글 추가" onChange={(v) => setComment(v.target.value)}></textarea>
+                  </div>
+                  <button type="button" className="btn btn-primary col-1" onClick={handleWriteComment}>
+                    등록
+                  </button>
+                </form>
+              </CommentContainer>
+            </CommentContainer>
+            {notiModal && <AskModal handleModal={handleNotiModal} currModalContent={currModalContent} activeAxios={handleDelete} />}
+          </BodyWrapper>
+        </BodyContainer>
+      )}
+    </>
   );
 }
 
@@ -319,4 +325,12 @@ const Delete = styled.button``;
 const ImageThumbnail = styled.img`
   width: 50px;
   height: 50px;
+`;
+
+const Warnning = styled.div`
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
 `;
