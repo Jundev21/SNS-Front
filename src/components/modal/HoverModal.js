@@ -69,6 +69,11 @@ const Input = styled.input`
   }
 `;
 
+const NotiContent = styled.div`
+  font-weight: normal;
+  font-size: 16px;
+`;
+
 // const Button = styled.button`
 //   max-width: 100%;
 //   padding: 11px 13px;
@@ -90,7 +95,7 @@ const Input = styled.input`
 // `;
 
 const Title = styled.h2`
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 `;
 
 const HoverModal = ({ handleModal, currModalContent }) => {
@@ -100,7 +105,7 @@ const HoverModal = ({ handleModal, currModalContent }) => {
         <ModalContent>
           <CloseButton onClick={handleModal}>&times;</CloseButton>
           <Title>알림</Title>
-          <div>{currModalContent}</div>
+          <NotiContent>{currModalContent}</NotiContent>
         </ModalContent>
       </ModalWrapper>
     </ModalOverlay>

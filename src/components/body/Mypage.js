@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import HoverModal from "components/modal/HoverModal";
+import LoadingAniWithBackGround from "components/modal/LoadingAniWithBackGround";
 import LoadingAnimation from "components/modal/LoadingAnimation";
 import AskModal from "components/modal/AskModal";
 import { useAppSelector } from "redux/hooks";
@@ -19,6 +20,7 @@ function Mypage() {
   const [userInfo, setUserInfo] = useState("");
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
+  const [upDateLoading, setUpdateIsLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [notiModal, setNotiModal] = useState(false);
   const [currModalContent, setCurrModalContent] = useState("");
@@ -117,27 +119,49 @@ function Mypage() {
 
     fomData.append("memberUpdateRequest", new Blob([JSON.stringify(updatedUserInfo)], { type: "application/json" }));
 
-    axios({
-      url: "/api/v1/users",
-      method: "POST",
-      withCredentials: true,
-      credentials: "include",
-      headers: {
-        Authorization: "Bearer " + sessionStorage.getItem("token"),
-      },
-      data: fomData,
-      "Content-Type": "multipart/form-data",
-    })
-      .then((res) => {
-        dispatch(setUserProfile(res.data.responseBody.userProfileImgUrl));
-      })
-      .catch((error) => {
-        setCurrModalContent("수정 실패하였습니다.");
-        // navigate("/authentication/sign-in");
+    try {
+      setUpdateIsLoading(true);
+      const res = await axios({
+        url: "/api/v1/users",
+        method: "POST",
+        withCredentials: true,
+        credentials: "include",
+        headers: {
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+        data: fomData,
+        "Content-Type": "multipart/form-data",
       });
 
-    setCurrModalContent("수정이 완료되었습니다.");
-    setNotiModal(true);
+      setUpdateIsLoading(false);
+      dispatch(setUserProfile("데이터변경"));
+      setCurrModalContent("수정이 완료되었습니다.");
+      setNotiModal(true);
+    } catch (error) {
+      setCurrModalContent("수정 실패하였습니다.");
+      // navigate("/authentication/sign-in");
+    }
+    // axios({
+    //   url: "/api/v1/users",
+    //   method: "POST",
+    //   withCredentials: true,
+    //   credentials: "include",
+    //   headers: {
+    //     Authorization: "Bearer " + sessionStorage.getItem("token"),
+    //   },
+    //   data: fomData,
+    //   "Content-Type": "multipart/form-data",
+    // })
+    //   .then((res) => {
+    //     dispatch(setUserProfile(res.data.responseBody.userProfileImgUrl));
+    //   })
+    //   .catch((error) => {
+    //     setCurrModalContent("수정 실패하였습니다.");
+    //     // navigate("/authentication/sign-in");
+    //   });
+
+    // setCurrModalContent("수정이 완료되었습니다.");
+    // setNotiModal(true);
   };
 
   async function handleDelete() {
@@ -217,6 +241,7 @@ function Mypage() {
               </Form>
 
               {notiModal && <HoverModal handleModal={handleNotiModal} currModalContent={currModalContent} />}
+              {upDateLoading && <LoadingAniWithBackGround />}
               {askModal && <AskModal handleModal={handleAskModal} currModalContent={currModalContent} activeAxios={handleDelete} />}
             </RightContainer>
           </MemberContainer>

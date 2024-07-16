@@ -129,7 +129,7 @@ const RegisterModal = (props) => {
       .catch((error) => {
         props.setCurrModalContent(error.response.data.userEmail);
       });
-    props.setCurrModalContent(userName + " 님 회원가입을 축하합니다.");
+    props.setCurrModalContent(`'${userName}' 님 회원가입을 축하합니다.`);
     props.handleModal();
     props.handleNotiModal();
   };
@@ -178,7 +178,6 @@ const RegisterModal = (props) => {
           <ModalContent>
             <Title>회원가입</Title>
             <CloseButton onClick={props.handleModal}>&times;</CloseButton>
-
             <Form>
               <Input placeholder={"아이디"} type="id" name="id" onChange={handleUserId} />
               <Input placeholder={"이름"} type="name" name="name" onChange={handleUserNameChange} />

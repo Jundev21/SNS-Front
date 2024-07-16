@@ -9,7 +9,6 @@ import axios from "axios";
 
 function MyInfo({ setIsLogin }) {
   const { userProfileImg } = useAppSelector((state) => state.searchState);
-
   const [isHovered, setHovered] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [updateUserProfileImg, setUpdateUserProfileImg] = useState("");
