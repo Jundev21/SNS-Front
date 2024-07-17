@@ -10,6 +10,10 @@ function WriteFeed() {
     navigate("/write/feed");
   };
 
+//  const HandleBoard = () => {
+//      navigate("/write/feed");
+//    };
+
   return (
     <>
       <LoginContainer onClick={HandleBoard}>
