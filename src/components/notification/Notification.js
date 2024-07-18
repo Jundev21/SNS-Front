@@ -11,7 +11,7 @@ function Notification() {
 
   useEffect(() => {
     handleGetAlarm();
-    const eventSource = new EventSourcePolyfill("/api/v1/users/notification/subscribe", {
+    const eventSource = new EventSourcePolyfill("http://localhost:8080/api/v1/users/notification/subscribe", {
       headers: {
         Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
