@@ -29,7 +29,7 @@ function Notification() {
     });
 
     eventSource.addEventListener("alarm", function (event) {
-      console.log("새로운알람 받았습니다", event.alarms);
+      console.log("새로운알람 받았습니다", event.data);
       setNewAlarms(1);
       handleGetAlarm();
     });

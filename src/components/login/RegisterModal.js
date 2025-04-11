@@ -125,11 +125,13 @@ const RegisterModal = (props) => {
         userEmail: email,
       },
     })
-      .then((res) => {})
+      .then((res) => {
+          props.setCurrModalContent(`'${userName}' 님 회원가입을 축하합니다.`);
+      })
       .catch((error) => {
-        props.setCurrModalContent(error.response.data.userEmail);
+        props.setCurrModalContent(error.response.data.responseBody);
       });
-    props.setCurrModalContent(`'${userName}' 님 회원가입을 축하합니다.`);
+
     props.handleModal();
     props.handleNotiModal();
   };
@@ -183,7 +185,7 @@ const RegisterModal = (props) => {
               <Input placeholder={"이름"} type="name" name="name" onChange={handleUserNameChange} />
               <Input placeholder={"이메일"} type="email" name="email" onChange={handleEmailChange} />
               <Input placeholder={"비밀번호"} type="password" name="password" onChange={handlePasswordChange} />
-              <Input placeholder={"비밀번호 확인"} type="checkPassword" name="checkPassword" onChange={handlePasswordConfirm} />
+              <Input placeholder={"비밀번호 확인"} type="password" name="password" onChange={handlePasswordConfirm} />
               <Button className="btn btn-primary" onClick={handleSignUp}>
                 회원가입
               </Button>

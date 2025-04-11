@@ -35,6 +35,8 @@ function Body() {
       .catch((error) => {
         // navigate("/authentication/sign-in");
       });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
   };
 
   const handleGetSearchPosts = (pageNum: any, searchWord: String) => {
