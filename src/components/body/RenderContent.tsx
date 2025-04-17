@@ -177,7 +177,7 @@ const UserIcon = styled.div`
 
 
 const ImageThumbnail = styled.img`
-    width: 3%;
-    height: 2%;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
 `;

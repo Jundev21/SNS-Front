@@ -1,17 +1,16 @@
 import styled from "styled-components";
 import Header from "./components/header/Header";
-import Body from "./components/body/Body";
-import { BrowserRouter, HashRouter, Route, Routes } from "react-router-dom";
+import Body from "./pages/Body";
+import {HashRouter, Route, Routes} from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import WriteFeedBody from "./components/feed/WriteFeedBody";
-import MyFeedBody from "./components/myFeed/MyFeedBody";
-import DetailFeedBody from "./components/body/DetailFeedBody";
-import MyDetailFeedBody from "./components/body/MyDetailFeedBody";
-import EditMyWriteFeedBody from "./components/body/EditMyWriteFeedBody ";
-import NotificationBody from "./components/notification/NotificationBody";
+import MyFeedBody from "./pages/MyFeedBody";
+import DetailFeedBody from "./pages/DetailFeedBody";
+import MyDetailFeedBody from "./pages/MyDetailFeedBody";
+import NotificationBody from "./pages/NotificationBody";
 import Mypage from "./components/body/Mypage";
 import AuthLayout from "./components/router/AuthLayout";
-import Login from "./components/login/Login";
+import EditMyWriteFeedBody from "./pages/EditMyWriteFeedBody ";
 
 function App() {
   return (

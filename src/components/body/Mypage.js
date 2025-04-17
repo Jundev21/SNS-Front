@@ -220,13 +220,13 @@ function Mypage() {
             <RightContainer>
               <Form>
                 <label>아이디</label>
-                <ID>{userInfo.userName}</ID>
-                <label>이메일</label>
-                <Input placeholder={userInfo.userEmail} type="email" name="password" onChange={handleEmailChange} />
-                <label>비밀번호</label>
-                <Input placeholder={"비밀번호"} type="password" name="password" onChange={handlePasswordChange} />
-                <label>비밀번호 확인</label>
-                <Input placeholder={"비밀번호 확인"} type="password" name="password" onChange={handlePasswordConfirm} />
+                <ID className="mt-1">{userInfo.userName}</ID>
+                {/*<label>이메일</label>*/}
+                {/*<Input placeholder={userInfo.userEmail} type="email" name="password" onChange={handleEmailChange} />*/}
+                <label className="mt-2">비밀번호</label>
+                <Input className="mt-1" placeholder={"비밀번호"} type="password" name="password" onChange={handlePasswordChange} />
+                <label className="mt-2">비밀번호 확인</label>
+                <Input className="mt-1" placeholder={"비밀번호 확인"} type="password" name="password" onChange={handlePasswordConfirm} />
                 <div className="d-grid gap-2 d-md-block mt-4 d-md-flex justify-content-md-center">
                   <button type="button" className="btn btn-outline-danger px-5 me-md-2" onClick={handlAskModal}>
                     탈퇴
@@ -261,7 +261,7 @@ const BodyContainer = styled.div`
 const BodyWrapper = styled.div`
   width: 850px;
   margin: auto;
-  padding: 30px 0;
+  padding: 100px 0;
 `;
 const MemberContainer = styled.div`
   display: flex;
@@ -269,7 +269,7 @@ const MemberContainer = styled.div`
   justify-content: center;
   width: 100%;
 
-  border: 1px solid rgba(245, 245, 245, 0.7);
+  border: 1px solid rgba(220, 220, 220, 1 );
   border-radius: 8px;
   padding: 40px;
 `;
@@ -277,6 +277,10 @@ const MemberContainer = styled.div`
 const LeftContainer = styled.div`
   font-size: 100px;
   width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
 `;
 const RightContainer = styled.div`
   width: 60%;
@@ -319,7 +323,7 @@ const InputFile = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px 5px;
+  padding: 50px 5px;
 `;
 
 const ID = styled.div`
@@ -333,7 +337,9 @@ const ImageBox = styled.div`
 `;
 
 const ImageThumbnail = styled.img`
-  width: 100%;
-  height: 100%;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
+  object-fit:cover;
+
 `;

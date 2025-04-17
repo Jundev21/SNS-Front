@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import Comment from "../comment/Comment";
+import Comment from "../components/comment/Comment";
 import axios from "axios";
 import dayjs from "dayjs";
-import HoverModal from "components/modal/HoverModal";
+import HoverModal from "../components/modal/HoverModal";
 
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import AskModal from "components/modal/AskModal";
+import AskModal from "../components/modal/AskModal";
 
 function MyDetailFeedBody() {
   const { state } = useLocation();

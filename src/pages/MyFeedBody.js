@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useAppSelector } from "../../redux/hooks";
-import Pagination from "../Pagination";
-import RenderContent from "../body/RenderContent";
-import BodyTitle from "../body/BodyTitle";
-import LoadingAnimation from "components/modal/LoadingAnimation";
+import { useAppSelector } from "../redux/hooks";
+import Pagination from "../components/util/Pagination";
+import RenderContent from "../components/body/RenderContent";
+import BodyTitle from "../components/body/BodyTitle";
+import LoadingAnimation from "../components/modal/LoadingAnimation";
 
 function MyFeedBody() {
   const { searchWord, orderCommand } = useAppSelector((state) => state.searchState);

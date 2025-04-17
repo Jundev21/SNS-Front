@@ -105,7 +105,7 @@ const RegisterModal = (props) => {
   const handleSignUp = (event) => {
     event.preventDefault();
 
-    if (password === "" || checkPassword === "" || email === "" || userName === "") {
+    if (password === "" || checkPassword === "" || userName === "") {
       alert("다시한번 확인해주세요.");
       return;
     } else if (password !== checkPassword) {
@@ -122,7 +122,6 @@ const RegisterModal = (props) => {
         userName: userName,
         password: password,
         checkPassword: checkPassword,
-        userEmail: email,
       },
     })
       .then((res) => {
@@ -183,7 +182,6 @@ const RegisterModal = (props) => {
             <Form>
               <Input placeholder={"아이디"} type="id" name="id" onChange={handleUserId} />
               <Input placeholder={"이름"} type="name" name="name" onChange={handleUserNameChange} />
-              <Input placeholder={"이메일"} type="email" name="email" onChange={handleEmailChange} />
               <Input placeholder={"비밀번호"} type="password" name="password" onChange={handlePasswordChange} />
               <Input placeholder={"비밀번호 확인"} type="password" name="password" onChange={handlePasswordConfirm} />
               <Button className="btn btn-primary" onClick={handleSignUp}>

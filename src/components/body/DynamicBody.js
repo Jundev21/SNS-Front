@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAppSelector } from "../../redux/hooks";
-import Pagination from "../Pagination";
+import Pagination from "../util/Pagination";
 import RenderContent from "./RenderContent";
 import BodyTitle from "./BodyTitle";
 import LoadingAnimation from "../modal/LoadingAnimation";

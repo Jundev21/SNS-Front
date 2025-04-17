@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import HoverModal from "components/modal/HoverModal";
+import HoverModal from "../components/modal/HoverModal";
 
 function EditMyWriteFeedBody() {
   const { state } = useLocation();

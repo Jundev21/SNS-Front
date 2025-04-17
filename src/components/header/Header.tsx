@@ -88,13 +88,13 @@ const BeforeLoginInfo = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 15px;
+  
 `;
 
 const LoginInfo = styled.div`
-  flex-basis: 10%;
+  flex-basis: 9%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 15px;
+  
 `;

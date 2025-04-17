@@ -63,8 +63,7 @@ function MyInfo({ setIsLogin }) {
     <ModalWrapper>
       <HoverContainer onMouseOver={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         <UserIcon>
-          {updateUserProfileImg === "" && <i className="bi bi-person-circle"> </i>}
-
+          {updateUserProfileImg === "" && <DefaultImg className="bi bi-person-circle"> </DefaultImg>}
           {updateUserProfileImg !== "" && <ImageThumbnail src={updateUserProfileImg} />}
         </UserIcon>
         {isHovered && (
@@ -83,7 +82,6 @@ export default MyInfo;
 const UserIcon = styled.div`
   color: #807979;
   cursor: pointer;
-  font-size: 30px;
 `;
 const ModalContainer = styled.div`
   width: 100px;
@@ -111,6 +109,7 @@ const ModalContents = styled.ul`
   border-radius: 5px;
   list-style-type: none;
   text-align: center;
+  font-size: 1rem;
 `;
 
 const ModalList = styled.li`
@@ -123,7 +122,13 @@ const ModalList = styled.li`
 `;
 
 const ImageThumbnail = styled.img`
-  width: 80%;
-  height: 80%;
-  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  border-radius:50%;
+  object-fit:cover;
 `;
+
+const DefaultImg = styled.i`
+  font-size:160%;
+  border-radius:50%;
+`
