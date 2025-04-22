@@ -2,8 +2,8 @@ import styled from "styled-components";
 import axios from "axios";
 import dayjs from "dayjs";
 
-import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
 import HoverModal from "../components/modal/HoverModal";
 
 function EditMyWriteFeedBody() {
@@ -26,6 +26,11 @@ function EditMyWriteFeedBody() {
   const handleNotiModal = () => {
     setNotiModal((e) => !e);
   };
+
+
+  console.log("http");
+
+
 
   const handleLikePost = (event) => {
     axios({

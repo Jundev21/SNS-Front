@@ -9,7 +9,7 @@ import MyFeed from "../myFeed/MyFeed";
 import WriteFeed from "../feed/WriteFeed";
 import Notification from "../notification/Notification";
 import LogOut from "../login/LogOut";
-import snsImg from "../../img/sns.jpeg";
+import snsImg from "../../img/sns.jpg";
 import { useNavigate } from "react-router-dom";
 import MyInfo from "./MyInfo";
 import HoverModal from "../modal/HoverModal";

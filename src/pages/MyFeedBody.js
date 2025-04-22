@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
-import { useAppSelector } from "../redux/hooks";
+import {useAppSelector} from "../redux/hooks";
 import Pagination from "../components/util/Pagination";
 import RenderContent from "../components/body/RenderContent";
 import BodyTitle from "../components/body/BodyTitle";

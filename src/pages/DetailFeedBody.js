@@ -2,10 +2,9 @@ import styled from "styled-components";
 import axios from "axios";
 import dayjs from "dayjs";
 
-import { useState, useEffect, useCallback } from "react";
-import { useLocation } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useLocation} from "react-router-dom";
 import HoverModal from "../components/modal/HoverModal";
-import { useAppSelector } from "../redux/hooks";
 
 function DetailFeedBody() {
   const { state } = useLocation();
